@@ -20,9 +20,20 @@ Our objective is to leverage Physics-Informed Neural Networks (PINNs), where phy
 ---
 
 ### 🎙️ Slide 3: Mathematical Framework & Composite Loss
-* **English:** *"Here is our mathematical formulation. Instead of treating the neural network as a pure black box, we approximate the field $u(x, t)$ with network weights $\theta$. We evaluate the PDE differential operator using PyTorch Autograd, which applies the chain rule on the computational graph.  
-Our loss function consists of two parts: $\mathcal{L}_{data}$ enforcing initial and boundary conditions, and $\mathcal{L}_{pde}$ penalizing any violation of the differential equation at scattered interior collocation points."*
-* **Hindi Samajh:** Loss function ka formula explain kijiye: Data loss + PDE residual loss. Aur batayein ki PyTorch Autograd exact derivative nikalta hai bina kisi truncation error ke.
+* **English:** *"Here is our mathematical formulation. We frame the PDE as an operator equation in Hilbert Space $L^2(Q_T)$. According to Pinkus' Universal Approximation Theorem for Derivatives, an MLP with $C^\infty$ activation functions (like $\tanh$) can approximate both the function and its partial derivatives simultaneously.  
+Our loss functional discretizes the continuous $L^2$ norm via Monte Carlo quadrature into $\mathcal{L}_{data}$ and $\mathcal{L}_{pde}$."*
+* **Hindi Samajh:** Hilbert space, Pinkus Theorem for Derivatives, aur Monte Carlo integration ka formal mathematical reference dijiye.
+
+---
+
+### 🎙️ Slide 4 (Slide 3B): Computational Architecture & Workflow Diagram
+* **English:** *"This architectural diagram illustrates our complete computational pipeline:
+1. Spatiotemporal coordinates $(x, t)$ enter the deep network approximator.
+2. The network outputs predicted field $\hat{u}(x, t)$.
+3. Crucially, PyTorch's Autograd engine computes exact partial derivatives ($\hat{u}_t, \hat{u}_x, \hat{u}_{xx}$) via the chain rule on the computational graph.
+4. These gradients feed into the PDE residual operator $f(x, t) = \hat{u}_t + \hat{u}\hat{u}_x - \nu \hat{u}_{xx}$.
+5. The composite loss is minimized via backpropagation to iteratively optimize weights $\theta$."*
+* **Hindi Samajh:** Screen par bane diagram ko step-by-step point kijiye: Coordinates $\to$ Neural Net $\to$ Autograd $\to$ Residual $\to$ Loss $\to$ Backpropagation update loop. Committee diagram dekh kar bohot impress hogi!
 
 ---
 

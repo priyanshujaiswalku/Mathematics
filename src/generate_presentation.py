@@ -138,14 +138,24 @@ def create_midterm_presentation():
     tb3 = slide3.shapes.add_textbox(Inches(0.8), Inches(1.5), Inches(11.7), Inches(5.5))
     tf3 = tb3.text_frame
     
-    add_bullet(tf3, "General PDE Operator",
-               "Let D[u](x, t) = u_t + N_x[u] = 0 in domain Omega, with boundary conditions B(u, x, t) = 0 and initial state u(x, 0) = u_0(x).")
-    add_bullet(tf3, "Neural Network Approximation",
-               "Approximate the unknown continuous solution u(x, t) using a deep neural network u_hat(x, t; theta) parameterized by weights and biases theta.")
-    add_bullet(tf3, "Automatic Differentiation (PyTorch Autograd)",
+    add_bullet(tf3, "General PDE Operator in Hilbert Space",
+               "Let D[u](x, t) = u_t + N_x[u] = 0 in domain Q_T, with boundary trace B[u] = 0 on Sigma_T and initial Cauchy data u(x, 0) = u_0(x).")
+    add_bullet(tf3, "Universal Derivative Approximation Theorem (Pinkus, 1999)",
+               "Smooth neural networks sigma in C^infinity (such as tanh or sin) can simultaneously approximate both the solution field u and its partial derivatives to arbitrary precision.")
+    add_bullet(tf3, "Reverse-Mode Automatic Differentiation (Autograd)",
                "Exact partial derivatives (u_t, u_x, u_xx) are evaluated using the chain rule on the computational graph — eliminating numerical truncation error O(dx^2) without any spatial mesh.")
-    add_bullet(tf3, "Composite Multi-Objective Loss",
-               "Loss(theta) = w_data * MSE_data + w_pde * MSE_pde, where MSE_pde = (1/N_f) * sum |D[u_hat](x_f, t_f)|^2 computed at scattered interior collocation points.")
+    add_bullet(tf3, "Variational Loss Functional via Monte Carlo Quadrature",
+               "L(theta) = lambda_data * MSE_data + lambda_pde * MSE_pde, where MSE_pde approximates the continuous L^2-norm integral ||D[u_hat]||^2 over scattered interior collocation points.")
+
+    # -------------------------------------------------------------
+    # SLIDE 3B: Computational Architecture Diagram
+    # -------------------------------------------------------------
+    slide3b = prs.slides.add_slide(blank_layout)
+    add_header(slide3b, "3. Computational Graph & Physics-Informed Workflow")
+    
+    diag_path = "reports/figures/pinn_mathematical_architecture.png"
+    if os.path.exists(diag_path):
+        slide3b.shapes.add_picture(diag_path, Inches(0.8), Inches(1.3), width=Inches(11.73))
 
     # -------------------------------------------------------------
     # SLIDE 4: Experiment 1: 1D Poisson Benchmark (PINN vs FDM)
